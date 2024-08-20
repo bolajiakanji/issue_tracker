@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Button, TextField, Callout, Text } from "@radix-ui/themes";
+import { Button, TextField, Callout } from "@radix-ui/themes";
 import dynamic from "next/dynamic";
 import "easymde/dist/easymde.min.css";
 import { useForm, Controller } from "react-hook-form";
