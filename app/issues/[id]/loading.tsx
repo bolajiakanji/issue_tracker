@@ -6,7 +6,7 @@ const LoadingIssueDetailPage = () => {
   return (
     <div>
       <Heading>
-        <Skeleton />
+        <Skeleton className="max-w-7"/>
       </Heading>
       <Flex className="space-x-3" my="2">
         <Skeleton width="5rem" />
