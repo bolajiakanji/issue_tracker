@@ -11,7 +11,7 @@ const EditIssuePage = ({ params: { id } }) => {
     if (!issue) notFound()
     
   return (
-      <IssueForm status={ status } />
+      <IssueForm status={issue} />
   )
 }
 
