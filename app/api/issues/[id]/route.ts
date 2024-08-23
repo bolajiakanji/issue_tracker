@@ -15,7 +15,7 @@ export async function PATCH(
     where: { id: parseInt(id) },
   });
   if (!issue)
-    return NextResponse.json({ error: "invalid issue" }, { status: 400 });
+    return NextResponse.json({ error: "invalid issue" }, { status: 404 });
 
   const updatedIssue = await prisma.issue.update({
     where: { id: issue.id },
@@ -24,9 +24,24 @@ export async function PATCH(
       description: body.description,
     },
   });
-  console.log(updatedIssue?.title)
-    
-  return NextResponse.json(updatedIssue, { status: 201 })
+  console.log(updatedIssue?.title);
 
+  return NextResponse.json(updatedIssue, { status: 201 });
 }
 
+export async function DELETE(
+  request: NextRequest,
+  { params: { id } }: { params: { id: string } }
+) {
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt(id) },
+  });
+  if (!issue)
+    return NextResponse.json({ error: "invalid issue" }, { status: 404 });
+
+  await prisma.issue.delete({
+    where: { id: issue.id },
+  });
+
+  return NextResponse.json({}, { status: 200 });
+}
