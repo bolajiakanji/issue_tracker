@@ -12,14 +12,11 @@ import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
 import { Issue } from "@prisma/client";
+import SimpleMDE from "react-simplemde-editor";
 
 type IssueFormData = z.infer<typeof issueSchema>;
 
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
-
-const IssueForm = ({ issue }: { issue: Issue }) => {
+const IssueForm = ({ issue }: { issue?: Issue }) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
@@ -35,9 +32,10 @@ const IssueForm = ({ issue }: { issue: Issue }) => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setIsSubmitting(true);
-      if (issue) await axios.patch("/api/issues" + issue.id, data);
+      if (issue) await axios.patch("/api/issues/" + issue.id, data);
       else await axios.post("/api/issues", data);
       router.push("/issues");
+      router.refresh();
     } catch (error) {
       setError("unexpected error occured");
       setIsSubmitting(false);
@@ -55,16 +53,17 @@ const IssueForm = ({ issue }: { issue: Issue }) => {
         <TextField.Root
           placeholder="Title"
           {...register("title")}
-          defaultValue={issue.title}
+          defaultValue={issue?.title}
         />
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           name="description"
-          defaultValue={issue.description}
+          defaultValue={issue?.description}
           control={control}
-          render={({ field }) => (
-            <SimpleMDE placeholder="Description" {...field} />
-          )}
+          render={({ field }) => {
+            const { ref, ...rest } = field;
+            return <SimpleMDE placeholder="Description" {...rest} />;
+          }}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
