@@ -11,7 +11,7 @@ export async function PATCH(
 ) {
   const session = await getServerSession(authOptions)
 
-    if (session)
+    if (!session)
     return NextResponse.json({}, { status: 401 })
 
   
@@ -44,9 +44,9 @@ export async function DELETE(
 ) {
   const session = await getServerSession(authOptions)
 
-    if (session)
+    if (!session)
     return NextResponse.json({}, { status: 401 })
-  
+
   const issue = await prisma.issue.findUnique({
     where: { id: parseInt(id) },
   });
