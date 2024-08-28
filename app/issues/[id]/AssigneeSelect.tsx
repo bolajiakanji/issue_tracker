@@ -5,7 +5,7 @@ import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React from "react";
-import { Skeleton } from '@/app/components'
+import { Skeleton } from "@/app/components";
 
 const AssigneeSelect = () => {
   const {
@@ -14,14 +14,14 @@ const AssigneeSelect = () => {
     isLoading,
   } = useQuery({
     queryKey: ["users"],
-      queryFn: () => axios.get<User[]>("/api/users").then((res) => res.data),
-      staleTime: 60 * 1000, //60 seconds
-      retry: 3,
+    queryFn: () => axios.get<User[]>("/api/users").then((res) => res.data),
+    staleTime: 60 * 1000, //60 seconds
+    retry: 3,
   });
-    
-    if (isLoading) return <Skeleton />
-    
-    if (error) return null
+
+  if (isLoading) return <Skeleton />;
+
+  if (error) return null;
 
   return (
     <Select.Root>
