@@ -16,7 +16,7 @@ interface Props {
 const columns: { label: string; value?: string; className?: string }[] = [
   {
     label: "Issues",
-    value: "tittle",
+    value: "title",
   },
   { label: "Status", value: "status", className: "hidden md:table-cell" },
   { label: "Created", value: "createdAt", className: "hidden md:table-cell" },
@@ -28,9 +28,15 @@ const IssuePage = async ({ searchParams }: Props) => {
     ? searchParams.status
     : undefined;
 
+  const orderBy = columns
+    .map((column) => column.value)
+    .includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: "asc" }
+    : undefined;
+
   const issues = await prisma.issue.findMany({
     where: { status },
-    // orderBy: { [searchParams.orderBy]: 'asc'}
+    orderBy,
   });
 
   return (
@@ -49,7 +55,9 @@ const IssuePage = async ({ searchParams }: Props) => {
                   href={{ query: { ...searchParams, orderBy: column.value } }}
                 >
                   {column.label}
-                  {column.value === searchParams.orderBy && <ArrowUpIcon  className="inline"/>}
+                  {column.value === searchParams.orderBy && (
+                    <ArrowUpIcon className="inline" />
+                  )}
                 </NextLink>
               </Table.ColumnHeaderCell>
             ))}
