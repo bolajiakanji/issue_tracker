@@ -4,9 +4,7 @@ import { IssueStatusBadge, Link } from "@/app/components";
 import prisma from "@/prisma/client";
 import IssueAction from "./IssueAction";
 import { Issue, Status } from "@prisma/client";
-
 import NextLink from "next/link";
-import { useRouter } from "next/navigation";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
 
 interface Props {
